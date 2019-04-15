@@ -17,7 +17,7 @@ public class CarsXmlRW {
     private SAXParser saxParser;
     private StringWriter stringWriter;
     private XMLOutputFactory xmlOutputFactory;
-    private XMLStreamWriter xmlStreamWriter;
+
     private String str;
     private List<Car> carList;
     private String name;
@@ -34,10 +34,10 @@ public class CarsXmlRW {
     	String filePath = "Cars.xml";
 
     	
-        SAXParserFactory factory = SAXParserFactory.newInstance();
+    	saxParserFactory = SAXParserFactory.newInstance();
         
         try {
-			SAXParser saxParser = factory.newSAXParser();
+			 saxParser = saxParserFactory.newSAXParser();
 
 			DefaultHandler handler = new DefaultHandler() 
 			{
@@ -59,7 +59,7 @@ public class CarsXmlRW {
 							bool_imported = true;
 						else
 							bool_imported = false;	
-						nameTime =true;
+							nameTime =true;
 					}
 					
 					if(qName.equals("price"))
@@ -80,6 +80,7 @@ public class CarsXmlRW {
 					if(priceTime)
 					{
 						price = Integer.parseInt(new String(ch, start, length));
+						carList.add(new Car(name, price, bool_imported));
 						priceTime = false;
 					}
 					
@@ -90,7 +91,7 @@ public class CarsXmlRW {
 				{
 					if(qName.equals("Car"))
 					{
-						carList.add(new Car(name, price, bool_imported));
+//						carList.add(new Car(name, price, bool_imported));
 //						name = null;
 //						price = 0;
 //						bool_imported = false;
@@ -118,11 +119,11 @@ public class CarsXmlRW {
     public void write(List<Car> list){
         
     	
-    	StringWriter stringWriter = new StringWriter();
-		XMLOutputFactory xMLOutputFactory = XMLOutputFactory.newInstance();
+    	 stringWriter = new StringWriter();
+    	 xmlOutputFactory = XMLOutputFactory.newInstance();
 		
 		try {
-			XMLStreamWriter xMLStreamWriter = xMLOutputFactory.createXMLStreamWriter(stringWriter);
+			XMLStreamWriter xMLStreamWriter = xmlOutputFactory.createXMLStreamWriter(stringWriter);
 			
 			xMLStreamWriter.writeStartDocument();
 			xMLStreamWriter.writeStartElement("Cars");
@@ -132,7 +133,7 @@ public class CarsXmlRW {
 			{
 				xMLStreamWriter.writeStartElement("Car");
 							
-				xMLStreamWriter.writeStartElement("n");
+				xMLStreamWriter.writeStartElement("name");
 				xMLStreamWriter.writeAttribute("imported", Boolean.toString(car.isImported()));
 				xMLStreamWriter.writeCharacters(car.getName());
 				xMLStreamWriter.writeEndElement();
@@ -144,7 +145,7 @@ public class CarsXmlRW {
 				xMLStreamWriter.writeEndElement();
 			}
 			
-			xMLStreamWriter.writeEndElement();
+//			xMLStreamWriter.writeEndElement();
 			xMLStreamWriter.writeEndDocument();
 			
 			xMLStreamWriter.close();
