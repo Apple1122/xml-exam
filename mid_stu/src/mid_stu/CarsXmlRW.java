@@ -100,10 +100,7 @@ public class CarsXmlRW {
 				}
 			};
 			
-			File f = new File(filePath);
-			
-			if(f.exists())
-				saxParser.parse(filePath, handler);
+			saxParser.parse(filePath, handler);
 	
 			
 		} catch (ParserConfigurationException | SAXException | IOException e) {
